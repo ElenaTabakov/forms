@@ -1,0 +1,19 @@
+.form_field {
+    border-radius: 10px;
+    border-width: 1px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.error {
+    color: red;
+    display: block;
+    margin: 0 0 15px;
+}
+
+.form_label {
+    display: block;
+    margin: 0 0 15px;
+}

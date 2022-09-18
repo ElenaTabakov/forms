@@ -4,12 +4,14 @@ import './App.css';
 import SimpleForm from './Components/Forms/SimpleForm';
 import * as S from './App.styles'
 import ConditionalFrom from './Components/Forms/ConditionalFrom';
+import RgisterForm from './Components/Forms/RgisterForm';
 
 function App() {
   return (
     <S.PageWrapper>
-      <SimpleForm />
-      <ConditionalFrom />
+      <RgisterForm/>
+            {/* <SimpleForm /> */}
+      {/* <ConditionalFrom /> */}
     </S.PageWrapper>
   );
 }

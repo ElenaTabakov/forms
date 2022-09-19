@@ -81,12 +81,8 @@ const RgisterForm = () => {
       return;
     }
 
-    dispatch(registerUser({
-      email: email,
-      password: pwd,
-      name: user
-    }));
-    //     const register = async () => {
+    dispatch(registerUser({ email: email, password: pwd,name: user }));
+    
    
   };
 

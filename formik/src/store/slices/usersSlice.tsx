@@ -4,7 +4,7 @@ import axios from "axios";
 
 const USERS_URL = "http://142.93.224.186:3000/users/";
 const axiosApi = axios.create({
-  baseURL: "http://142.93.224.186:3000/",
+  baseURL: "http://142.93.224.186:3000/users/",
   headers: {
     withCredentials: true,
   },

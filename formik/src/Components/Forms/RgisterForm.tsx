@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import './SimpleForm.css';
-import { createUser, setUser } from "../../store/slices/usersSlice";
+import { registerUser, loginUser } from "../../store/slices/usersSlice";
 import { RootState } from "../../store/store";
 
 
@@ -75,14 +75,13 @@ const RgisterForm = () => {
   // };
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const axios = require('axios');
 
     if (!user || !email || !pwd) {
       console.log("Empty data");
       return;
     }
 
-    dispatch(createUser({
+    dispatch(registerUser({
       email: email,
       password: pwd,
       name: user

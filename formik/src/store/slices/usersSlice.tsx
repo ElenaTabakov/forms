@@ -3,21 +3,30 @@ import type { RootState } from '../store';
 import axios from 'axios';
 
 const USERS_URL = 'http://142.93.224.186:3000/users/'
+const axiosApi = axios.create({
+    baseURL: "http://142.93.224.186:3000/",
+    headers: {
+      withCredentials: true,
+    },
+  });
 
-const fetchUserById = createAsyncThunk(
-    'users/fetchUsers' , 
+
+const loginUser = createAsyncThunk(
+    'users/login' , 
      async function (){
-         const response = await axios.get(USERS_URL);
+         const response = await axios.get(USERS_URL + '/login');
          console.log(response);
      }
-    )
+)
+const fetchUser = createAsyncThunk(
+    'users/fetchUsers' , 
+     async function (){
+         const response = await axiosApi.get(USERS_URL + '/register');
+         console.log(response);
+     }
+)
 
-// const axiosApi = axios.create({
-//     baseURL: "http://142.93.224.186:3000/",
-//     headers: {
-//       withCredentials: true,
-//     },
-//   });
+
 
   interface User {
         id: string;
@@ -42,10 +51,7 @@ const fetchUserById = createAsyncThunk(
     reducers: {
 
        createUser: ( state, {payload} : PayloadAction <Omit<User , 'id'>>) => {
-  
-        const res = async () => {
-
-        
+        const res = async () => {     
         try {
             const response = await axios.post("register",
               {

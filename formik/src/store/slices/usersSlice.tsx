@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import axios from "axios";
+import { stringify } from "querystring";
 
 const USERS_URL = "http://142.93.224.186:3000/users/";
 const axiosApi = axios.create({
@@ -10,14 +11,7 @@ const axiosApi = axios.create({
   },
 });
 
-export const loginUser = createAsyncThunk("users/login", async () => {
-  try {
-    const response = await axiosApi.get( "/login");
-    return [...response.data];
-  } catch (err: any | undefined) {
-    return err.masssage;
-  }
-});
+
 export const registerUser = createAsyncThunk("users/register", async ({email , password, name} : RegisterUserPost ) => {
   try {
     const response = await axiosApi.post( "/register" , { email , password, name}  );
@@ -26,12 +20,26 @@ export const registerUser = createAsyncThunk("users/register", async ({email , p
     return err.message;
   }
 });
+export const loginUser = createAsyncThunk("users/login", async ({email,password} : LoginUserPost) => {
+    try {
+      const response = await axiosApi.post( "/login", ({email,password}) );
+      return [...response.data];
+      console.log(response.data.id);
 
-interface RegisterUserPost{
-    name: string;
-   email: string;
-   password: string;
+    } catch (err: any | undefined) {
+      return err.masssage;
+    }
+});
+
+interface LoginUserPost{
+    email: string;
+    password: string;
 }
+
+interface  RegisterUserPost extends LoginUserPost{
+    name: string;
+}
+
 interface User {
   id: string;
   name: string;
@@ -83,7 +91,20 @@ export const usersSlice = createSlice({
         state.status = 'loading'
     })
     .addCase(registerUser.fulfilled, (state, action) => {
-        state.status = 'succeeded'
+        state.status = 'succeeded';
+    })
+    .addCase(registerUser.rejected, (state, action) => {
+        state.status = 'failed'
+    })
+    .addCase(loginUser.pending, (state, action) => {
+        state.status = 'loading'
+    })
+    .addCase(loginUser.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.isAuth = true;       
+    })
+    .addCase(loginUser.rejected, (state, action) => {
+        state.status = 'failed'
     })
   },
 });

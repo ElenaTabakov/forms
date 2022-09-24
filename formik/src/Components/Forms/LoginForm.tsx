@@ -7,6 +7,7 @@ import { registerUser, loginUser } from "../../store/slices/usersSlice";
 import { RootState } from "../../store/store";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { AsyncLocalStorage } from "async_hooks";
 
 
 
@@ -46,7 +47,8 @@ const LoginForm = () => {
   };
 const handleSubmit = ( e: React.ChangeEvent<HTMLFormElement>) =>{
     e.preventDefault();
-    dispatch(loginUser({email: email, password: pwd}));
+    dispatch(loginUser({email: email, password: pwd} ));
+    // {status == 'succeeded' && navigate('/tasks')}
 }
 
 
@@ -55,7 +57,7 @@ const handleSubmit = ( e: React.ChangeEvent<HTMLFormElement>) =>{
     <>
       <h1>Login</h1>
       {status == 'loading' && <p>Loading...</p>}
-      {status == 'succeeded' && navigate('/tasks')}
+      
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">
           Email:

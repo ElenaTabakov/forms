@@ -3,7 +3,7 @@ import type { RootState } from "../store";
 import axios from "axios";
 
 
-const TASKS_URL = "http://142.93.224.186:3000/tasks/";
+const TASKS_URL = "http://142.93.224.186:3000/tasks";
 const axiosApi = axios.create({
     baseURL: TASKS_URL,
     headers: {

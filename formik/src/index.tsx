@@ -22,7 +22,7 @@ root.render(
         <Route path="/login" element={<Login/>} />
         <Route path="/tasks" element={<Tasks/>} />
       </Routes>
-    </BrowserRouter>
+     </BrowserRouter>
     {/* <App /> */}
   </Provider>
 );

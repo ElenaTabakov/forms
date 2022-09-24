@@ -8,9 +8,11 @@ const Tasks = () => {
   const tasks = useSelector((state: RootState) => state.tasksSlice.tasks);
   const status = useSelector((state: RootState) => state.tasksSlice.status);
 
-  useEffect(() => {
-        console.log(tasks);
-  }, [tasks])
+//   useEffect(() => {
+//         console.log(tasks);
+//   }, [])
+
+//   dispatch(fetchTasksByUsedId());
 
   return <div>{status == "succeeded" && tasks.map((task) => {return <p>{task}</p>}) }</div>;
 };

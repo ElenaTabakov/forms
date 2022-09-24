@@ -10,6 +10,7 @@ import axios from "axios";
 import './SimpleForm.css';
 import { registerUser, loginUser } from "../../store/slices/usersSlice";
 import { RootState } from "../../store/store";
+import { useNavigate } from "react-router-dom";
 
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -20,8 +21,9 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{5,24}$/;
 const RgisterForm = () => {
 
   const users = useSelector((state: RootState) => state.usersSlice.users);
+  const status = useSelector((state: RootState) => state.usersSlice.status);
   const dispatch = useDispatch();
-  
+  const navigate = useNavigate();
 
   //   const userRef = useRef();
   //   const errRef = useRef();
@@ -82,7 +84,7 @@ const RgisterForm = () => {
     }
 
     dispatch(registerUser({ email: email, password: pwd,name: user }));
-    
+    {status == 'succeeded' && navigate('/login')}
    
   };
 
@@ -104,6 +106,7 @@ const RgisterForm = () => {
 
   return (
     <section>
+      
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">
           Username: 

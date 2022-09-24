@@ -1,10 +1,12 @@
 import React from 'react'
 import { configureStore } from '@reduxjs/toolkit'
 import usersReducer from './slices/usersSlice'
+import tasksReducer from './slices/tasksSlice'
 
 export  const store =  configureStore({
   reducer: {
     usersSlice:  usersReducer,
+    tasksSlice: tasksReducer
   },
 })
 

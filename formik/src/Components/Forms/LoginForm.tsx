@@ -5,6 +5,8 @@ import axios from "axios";
 import "./SimpleForm.css";
 import { registerUser, loginUser } from "../../store/slices/usersSlice";
 import { RootState } from "../../store/store";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -28,7 +30,7 @@ const LoginForm = () => {
   
     const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false); 
-
+    const navigate = useNavigate();
 
 
 
@@ -50,9 +52,10 @@ const handleSubmit = ( e: React.ChangeEvent<HTMLFormElement>) =>{
 
 
   return (
-    <section>
+    <>
       <h1>Login</h1>
       {status == 'loading' && <p>Loading...</p>}
+      {status == 'succeeded' && navigate('/tasks')}
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">
           Email:
@@ -75,7 +78,7 @@ const handleSubmit = ( e: React.ChangeEvent<HTMLFormElement>) =>{
         </label>
         <input type="submit" value="Send" />
       </form>
-    </section>
+    </>
   );
 };
 

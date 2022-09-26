@@ -1,20 +1,21 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import axios from "axios";
-import { stringify } from "querystring";
+import { stringify } from "querystring"
+import  { axiosApi }  from "./tasksSlice";
 
 const USERS_URL = "http://142.93.224.186:3000/users/";
-const axiosApi = axios.create({
-  baseURL: "http://142.93.224.186:3000/users/",
-  headers: {
-    withCredentials: true,
-  },
-});
+// const axiosApi = axios.create({
+//   baseURL: "http://142.93.224.186:3000/users/",
+//   headers: {
+//     withCredentials: true,
+//   },
+// });
 
 
 export const registerUser = createAsyncThunk("users/register", async ({email , password, name} : RegisterUserPost ) => {
   try {
-    const response = await axiosApi.post( "/register" , { email , password, name}  );
+    const response = await axiosApi.post( "register" , { email , password, name}  );
     console.log(response.data);
   } catch (err: any | undefined){
     return err.message;
@@ -22,7 +23,7 @@ export const registerUser = createAsyncThunk("users/register", async ({email , p
 });
 export const loginUser = createAsyncThunk("users/login", async ({email,password} : LoginUserPost) => {
     try {
-      const response = await axiosApi.post( "/login", ({email,password}) );
+      const response = await axiosApi.post( "users/login", ({email,password}) );
       return [...response.data];
       console.log(response.data.id);
 

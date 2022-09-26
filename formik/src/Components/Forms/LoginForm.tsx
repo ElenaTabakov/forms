@@ -48,7 +48,8 @@ const LoginForm = () => {
 const handleSubmit = ( e: React.ChangeEvent<HTMLFormElement>) =>{
     e.preventDefault();
     dispatch(loginUser({email: email, password: pwd} ));
-    // {status == 'succeeded' && navigate('/tasks')}
+
+    {status == 'succeeded' && navigate('/tasks')}
 }
 
 

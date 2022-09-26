@@ -8,13 +8,20 @@ const Tasks = () => {
   const tasks = useSelector((state: RootState) => state.tasksSlice.tasks);
   const status = useSelector((state: RootState) => state.tasksSlice.status);
 
-//   useEffect(() => {
-//         console.log(tasks);
-//   }, [])
+  useEffect(() => {
+    dispatch(fetchTasksByUsedId());
+        console.log(tasks);
+  }, [tasks ])
 
-//   dispatch(fetchTasksByUsedId());
+  interface Task {
+    id: string;
+    title: string;
+    shortDescription: string;
+    description: string;
+}
 
-  return <div>{status == "succeeded" && tasks.map((task) => {return <p>{task}</p>}) }</div>;
+  return <div>{tasks.map((task : Task) => {return <p>{task.id}</p>})}
+          </div>;
 };
 
 export default Tasks;

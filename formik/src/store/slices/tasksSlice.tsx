@@ -14,14 +14,28 @@ export const axiosApi = axios.create({
 export const fetchTasksByUsedId = createAsyncThunk("tasks/fetchTasks", async () => {
     try {
       const response = await axiosApi.get('tasks');
-      return [...response.data];
-      console.log(response);
+      return response.data.tasks;
+    //   console.log(response);
 
     } catch (err: any | undefined) {
       return err.masssage;
     }
 });  
-  
+export const deleteTasks = createAsyncThunk("tasks/deleteTasks", async (id:string) => {
+    try {
+      const response = await axiosApi.delete(`tasks/${id}`);
+      return response.data.tasks;
+    //   console.log(response);
+
+    } catch (err: any | undefined) {
+      return err.masssage;
+    }
+});  
+
+// deleteTask: ( state, {payload}: PayloadAction<string>) => {    
+//     state.tasks = state.tasks.filter((task) => payload !== task.id);    
+// },
+
 interface Task {
     id: string;
     title: string;
@@ -31,7 +45,7 @@ interface Task {
 
 interface tasksState {
     tasks: [];
-    status:  'loading' | 'succeeded' | 'failed' ;
+    status:  'loading' | 'succeeded' | 'failed' | 'deleted';
 }
 
 const initialState : tasksState = {
@@ -45,15 +59,24 @@ export const tasksSlice = createSlice({
     reducers: {},
     extraReducers(builder) {
         builder 
-        .addCase(fetchTasksByUsedId.pending, ( state, sction) => {
+        .addCase(fetchTasksByUsedId.pending, ( state, action) => {
             state.status = 'loading'
         })
         .addCase(fetchTasksByUsedId.fulfilled, (state, action) => {
             state.status = 'succeeded'
-            console.log(action.payload)
- 
+            state.tasks = action.payload
         })
         .addCase(fetchTasksByUsedId.rejected, (state, action) => {
+            state.status = 'failed'
+
+        })
+        .addCase(deleteTasks.pending, (state,action) => {
+            state.status = 'loading'
+        })
+        .addCase(deleteTasks.fulfilled, (state, action) => {
+            state.status = 'deleted'
+        })
+        .addCase(deleteTasks.rejected, (state, action) => {
             state.status = 'failed'
 
         })

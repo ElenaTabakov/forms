@@ -25,7 +25,16 @@ export const loginUser = createAsyncThunk("users/login", async ({email,password}
     try {
       const response = await axiosApi.post( "users/login", ({email,password}) );
       return [...response.data];
-      console.log(response.data.id);
+
+    } catch (err: any | undefined) {
+      return err.masssage;
+    }
+});
+
+export const logOutnUser = createAsyncThunk("users/logout", async () => {
+    try {
+      const response = await axiosApi.post( "users/login" );
+      return [...response.data];
 
     } catch (err: any | undefined) {
       return err.masssage;
@@ -105,6 +114,16 @@ export const usersSlice = createSlice({
         state.isAuth = true;       
     })
     .addCase(loginUser.rejected, (state, action) => {
+        state.status = 'failed'
+    })
+    .addCase(logOutnUser.pending, (state, action) => {
+        state.status = 'loading'
+    })
+    .addCase(logOutnUser.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.isAuth = false;       
+    })
+    .addCase(logOutnUser.rejected, (state, action) => {
         state.status = 'failed'
     })
   },

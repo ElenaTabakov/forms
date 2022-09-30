@@ -49,10 +49,12 @@ const handleSubmit = ( e: React.ChangeEvent<HTMLFormElement>) =>{
     e.preventDefault();
     dispatch(loginUser({email: email, password: pwd} ));
 
-    {status == 'succeeded' && navigate('/tasks')}
+  
 }
 
-
+useEffect(() => {
+       status == 'succeeded' && navigate('/tasks')
+}, [status] )
 
   return (
     <>

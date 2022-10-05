@@ -11,9 +11,25 @@ export const axiosApi = axios.create({
   
   });
 
+  interface Task {
+    id: string;
+    title: string;
+    description: string;
+}
 export const fetchTasksByUsedId = createAsyncThunk("tasks/fetchTasks", async () => {
     try {
       const response = await axiosApi.get('tasks');
+      return response.data.tasks;
+    //   console.log(response);
+
+    } catch (err: any | undefined) {
+      return err.masssage;
+    }
+});  
+export const createTasks = createAsyncThunk("tasks/createTasks", async ({title,description} : Task, thunkAPI) => {
+    try {
+      const response = await axiosApi.post('tasks', ({title, description}));
+      thunkAPI.dispatch(fetchTasksByUsedId());
       return response.data.tasks;
     //   console.log(response);
 
@@ -31,8 +47,7 @@ export const updateTasks = createAsyncThunk("tasks/updateTasks", async ({id,titl
     } catch (err: any | undefined) {
       return err.masssage;
     }
-});  
-
+}); 
 
 export const deleteTasks = createAsyncThunk("tasks/deleteTasks", async (id:string, thunkAPI) => {
     try {
@@ -50,24 +65,22 @@ export const deleteTasks = createAsyncThunk("tasks/deleteTasks", async (id:strin
 //     state.tasks = state.tasks.filter((task) => payload !== task.id);    
 // },
 
-interface Task {
-    id: string;
-    title: string;
-    description: string;
-}
+
 
 interface tasksState {
     tasks: [];
     statusFetch:  'loading' | 'succeeded' | 'failed' | 'idle' ;
     statusUpdate:  'loading' | 'succeeded' | 'failed' | 'idle' ;
     statusDelete :  'loading' | 'succeeded' | 'failed' | 'idle';
+    statusCreate :  'loading' | 'succeeded' | 'failed' | 'idle';
 }
 
 const initialState : tasksState = {
     tasks: [],
     statusFetch:  'idle',
     statusDelete: 'idle',
-    statusUpdate: 'idle'
+    statusUpdate: 'idle',
+    statusCreate : 'idle'
 }
 
 export const tasksSlice = createSlice({
@@ -104,6 +117,16 @@ export const tasksSlice = createSlice({
         })
         .addCase(updateTasks.rejected, (state, action) => {
             state.statusUpdate = 'failed'
+            
+        })
+        .addCase(createTasks.pending, (state,action) => {
+            state.statusCreate = 'loading'
+        })
+        .addCase(createTasks.fulfilled, (state, action) => {
+            state.statusCreate = "succeeded"
+        })
+        .addCase(createTasks.rejected, (state, action) => {
+            state.statusCreate = 'failed'
             
         })
     }

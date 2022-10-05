@@ -39,11 +39,10 @@ const Tasks = () => {
   }
   interface TaskFromProps extends Task {
     editForm?: boolean;
-    createForm?: boolean;
   }
   const [editTaskValue , setEditTaskValue] = useState<Task>({ id: '', title: '', description: ''})
 
-  const handleOpenForm = ({id , title, description, editForm, createForm} : TaskFromProps ) => {
+  const handleOpenForm = ({id , title, description, editForm} : TaskFromProps ) => {
      setEditFormOpen(true);
      editForm ?  setEditForm(true) : setEditForm(false);
      setEditTaskValue({id,title,description})

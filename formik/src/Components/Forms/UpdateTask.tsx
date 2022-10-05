@@ -6,7 +6,6 @@ interface UpdateFormProps {
   valueDescription: string;
   buttonText: string;
   editForm?: boolean;
-  createForm?: boolean;
   onChangeHandler: (e : React.ChangeEvent<HTMLInputElement>) => void;
   onSubmitHandler:  (e:  React.FormEvent<HTMLFormElement>) => void;
 }
@@ -18,8 +17,7 @@ const UpdateTask = ({
   onChangeHandler,
   onSubmitHandler,
   buttonText,
-  editForm,
-  createForm
+  editForm
 }: UpdateFormProps) => {
   return (
     <form onSubmit={onSubmitHandler}>

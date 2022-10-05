@@ -7,7 +7,7 @@ import { RootState } from "../store/store";
 const Tasks = () => {
   const dispatch = useDispatch<ThunkDispatch<{}, void, AnyAction>>();
   const tasks = useSelector((state: RootState) => state.tasksSlice.tasks);
-  const status = useSelector((state: RootState) => state.tasksSlice.status);
+  const statusDelete = useSelector((state: RootState) => state.tasksSlice.statusDelete);
 
   useEffect(() => {
     dispatch(fetchTasksByUsedId());
@@ -15,15 +15,16 @@ const Tasks = () => {
   }, []);
 
   const handleDeleteTask = (id:string) => {
-   
         dispatch(deleteTasks(id));
-        if(status === 'deleted'){
-            dispatch(fetchTasksByUsedId());
-       }  
   }
 
+  useEffect(() => {
+    statusDelete === "succeeded" && dispatch(fetchTasksByUsedId());
+  }, [statusDelete]);
+
+
   const hadleLogout = () => {
-    
+
   }
 
   interface Task {
@@ -36,7 +37,7 @@ const Tasks = () => {
   return (
     <div>
        <button onClick={hadleLogout}>Logout</button>
-      {tasks.map((task: Task) => {
+       {tasks.map((task: Task) => {
         return (
           <div key={task.id}>
             <h2>{task.title}</h2>

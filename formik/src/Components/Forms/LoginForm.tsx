@@ -47,13 +47,13 @@ const LoginForm = () => {
   };
 const handleSubmit = ( e: React.ChangeEvent<HTMLFormElement>) =>{
     e.preventDefault();
-    dispatch(loginUser({email: email, password: pwd} ));
-
-  
+    dispatch(loginUser({email: email, password: pwd} ))
 }
 
 useEffect(() => {
-       status == 'succeeded' && navigate('/tasks')
+    if(status === 'succeeded') {
+        navigate('/tasks');
+    }
 }, [status] )
 
   return (

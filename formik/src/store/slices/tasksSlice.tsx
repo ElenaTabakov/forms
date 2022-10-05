@@ -21,9 +21,10 @@ export const fetchTasksByUsedId = createAsyncThunk("tasks/fetchTasks", async () 
       return err.masssage;
     }
 });  
-export const deleteTasks = createAsyncThunk("tasks/deleteTasks", async (id:string) => {
+export const deleteTasks = createAsyncThunk("tasks/deleteTasks", async (id:string, thunkAPI) => {
     try {
       const response = await axiosApi.delete(`tasks/${id}`);
+      thunkAPI.dispatch(fetchTasksByUsedId);
       return response.data.tasks;
     //   console.log(response);
 
@@ -45,12 +46,14 @@ interface Task {
 
 interface tasksState {
     tasks: [];
-    status:  'loading' | 'succeeded' | 'failed' | 'deleted';
+    statusFetch:  'loading' | 'succeeded' | 'failed' | 'idle' ;
+    statusDelete :  'loading' | 'succeeded' | 'failed' | 'idle';
 }
 
 const initialState : tasksState = {
     tasks: [],
-    status: 'loading'
+    statusFetch:  'idle',
+    statusDelete: 'idle',
 }
 
 export const tasksSlice = createSlice({
@@ -60,25 +63,24 @@ export const tasksSlice = createSlice({
     extraReducers(builder) {
         builder 
         .addCase(fetchTasksByUsedId.pending, ( state, action) => {
-            state.status = 'loading'
+            state.statusFetch = 'loading'
         })
         .addCase(fetchTasksByUsedId.fulfilled, (state, action) => {
-            state.status = 'succeeded'
+            state.statusFetch = 'succeeded'
             state.tasks = action.payload
         })
         .addCase(fetchTasksByUsedId.rejected, (state, action) => {
-            state.status = 'failed'
-
+            state.statusFetch = 'failed'
         })
         .addCase(deleteTasks.pending, (state,action) => {
-            state.status = 'loading'
+            state.statusDelete = 'loading'
         })
         .addCase(deleteTasks.fulfilled, (state, action) => {
-            state.status = 'deleted'
+            state.statusDelete= "succeeded"
         })
         .addCase(deleteTasks.rejected, (state, action) => {
-            state.status = 'failed'
-
+            state.statusDelete = 'failed'
+            
         })
     }
 });

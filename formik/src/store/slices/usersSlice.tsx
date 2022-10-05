@@ -3,6 +3,7 @@ import type { RootState } from "../store";
 import axios from "axios";
 import { stringify } from "querystring"
 import  { axiosApi }  from "./tasksSlice";
+import { act } from "@testing-library/react";
 
 const USERS_URL = "http://142.93.224.186:3000/users/";
 // const axiosApi = axios.create({
@@ -13,21 +14,25 @@ const USERS_URL = "http://142.93.224.186:3000/users/";
 // });
 
 
-export const registerUser = createAsyncThunk("users/register", async ({email , password, name} : RegisterUserPost ) => {
+export const registerUser = createAsyncThunk("users/register", async ({email , password, name} : RegisterUserPost , { rejectWithValue }) => {
   try {
-    const response = await axiosApi.post( "register" , { email , password, name}  );
+    const response = await axiosApi.post( "register" , { email , password, name}   );
     console.log(response.data);
   } catch (err: any | undefined){
-    return err.message;
+
+    // console.log(err.message)
+    // return rejectWithValue(err.message)
+    return rejectWithValue(err.response.data.message)
   }
 });
 export const loginUser = createAsyncThunk("users/login", async ({email,password} : LoginUserPost) => {
     try {
       const response = await axiosApi.post( "users/login", ({email,password}) );
       return [...response.data];
-
+    
     } catch (err: any | undefined) {
       return err.masssage;
+    //   return rejectWithValue(err.message)
     }
 });
 
@@ -59,13 +64,13 @@ interface User {
 
 interface userState {
   users: [];
-  status: 'loading' | 'succeeded' | 'failed' ;
+  status: 'loading' | 'succeeded' | 'failed' | 'idle';
   isAuth: boolean;
 }
 // Define the initial state using that type
 const initialState: userState = {
   users: [],
-  status: 'loading',
+  status: 'idle',
   isAuth: false,
 };
 
@@ -73,28 +78,6 @@ export const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {},
-//   {
-//     createUser: (state, { payload }: PayloadAction<Omit<User, "id">>) => {
-//       const res = async () => {
-//         try {
-//           const response = await axios.post("register", {
-//             email: payload.email,
-//             password: payload.password,
-//             name: payload.name,
-//           });
-//           console.log(response);
-//           console.log(response?.data);
-//         } catch (err) {
-//           console.log(err);
-//         }
-//       };
-
-//       // console.log(payload);
-//     },
-
-//     setUser: (state, { payload }) => {},
-//   },
-
   extraReducers(builder) {
     builder 
     .addCase(registerUser.pending, (state, action) => {
@@ -105,6 +88,7 @@ export const usersSlice = createSlice({
     })
     .addCase(registerUser.rejected, (state, action) => {
         state.status = 'failed'
+        console.log(action)
     })
     .addCase(loginUser.pending, (state, action) => {
         state.status = 'loading'

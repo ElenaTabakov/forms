@@ -21,10 +21,23 @@ export const fetchTasksByUsedId = createAsyncThunk("tasks/fetchTasks", async () 
       return err.masssage;
     }
 });  
+export const updateTasks = createAsyncThunk("tasks/updateTasks", async ({id,title,description}: Task, thunkAPI) => {
+    try {
+      const response = await axiosApi.put(`tasks/${id}`, ({title, description}));
+      thunkAPI.dispatch(fetchTasksByUsedId());
+      return response.data.tasks;
+    //   console.log(response);
+
+    } catch (err: any | undefined) {
+      return err.masssage;
+    }
+});  
+
+
 export const deleteTasks = createAsyncThunk("tasks/deleteTasks", async (id:string, thunkAPI) => {
     try {
       const response = await axiosApi.delete(`tasks/${id}`);
-      thunkAPI.dispatch(fetchTasksByUsedId);
+      thunkAPI.dispatch(fetchTasksByUsedId());
       return response.data.tasks;
     //   console.log(response);
 
@@ -40,13 +53,13 @@ export const deleteTasks = createAsyncThunk("tasks/deleteTasks", async (id:strin
 interface Task {
     id: string;
     title: string;
-    shortDescription: string;
     description: string;
 }
 
 interface tasksState {
     tasks: [];
     statusFetch:  'loading' | 'succeeded' | 'failed' | 'idle' ;
+    statusUpdate:  'loading' | 'succeeded' | 'failed' | 'idle' ;
     statusDelete :  'loading' | 'succeeded' | 'failed' | 'idle';
 }
 
@@ -54,6 +67,7 @@ const initialState : tasksState = {
     tasks: [],
     statusFetch:  'idle',
     statusDelete: 'idle',
+    statusUpdate: 'idle'
 }
 
 export const tasksSlice = createSlice({
@@ -80,6 +94,16 @@ export const tasksSlice = createSlice({
         })
         .addCase(deleteTasks.rejected, (state, action) => {
             state.statusDelete = 'failed'
+            
+        })
+        .addCase(updateTasks.pending, (state,action) => {
+            state.statusUpdate = 'loading'
+        })
+        .addCase(updateTasks.fulfilled, (state, action) => {
+            state.statusUpdate = "succeeded"
+        })
+        .addCase(updateTasks.rejected, (state, action) => {
+            state.statusUpdate = 'failed'
             
         })
     }

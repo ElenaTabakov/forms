@@ -16,11 +16,11 @@ const USERS_URL = "http://142.93.224.186:3000/users/";
 
 export const registerUser = createAsyncThunk("users/register", async ({email , password, name} : RegisterUserPost , { rejectWithValue }) => {
   try {
-    const response = await axiosApi.post( "register" , { email , password, name}   );
+    const response = await axiosApi.post( "users/register" , { email , password, name}   );
     console.log(response.data);
   } catch (err: any | undefined){
 
-    // console.log(err.message)
+    console.log(err.message)
     // return rejectWithValue(err.message)
     return rejectWithValue(err.response.data.message)
   }

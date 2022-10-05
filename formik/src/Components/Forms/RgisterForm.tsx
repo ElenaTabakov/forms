@@ -11,6 +11,7 @@ import './SimpleForm.css';
 import { registerUser, loginUser } from "../../store/slices/usersSlice";
 import { RootState } from "../../store/store";
 import { useNavigate } from "react-router-dom";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -22,7 +23,7 @@ const RgisterForm = () => {
 
   const users = useSelector((state: RootState) => state.usersSlice.users);
   const status = useSelector((state: RootState) => state.usersSlice.status);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<{}, void, AnyAction>>();
   const navigate = useNavigate();
 
   //   const userRef = useRef();

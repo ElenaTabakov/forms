@@ -13,7 +13,7 @@ import { AsyncLocalStorage } from "async_hooks";
 
 const LoginForm = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<ThunkDispatch<{}, void, AnyAction>>();
     const users = useSelector((state: RootState) => state.usersSlice.users);
     const  status = useSelector((state: RootState) => state.usersSlice.status);
 

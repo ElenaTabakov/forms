@@ -4,6 +4,10 @@ interface UpdateFormProps {
   taskId: string;
   valueTitle: string;
   valueDescription: string;
+  valueShortDesctiption : string;
+  valueDate:Date | null;
+  valueDuration:number | null;
+  valueStatus:string;
   buttonText: string;
   editForm?: boolean;
   onChangeHandler: (e : React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,6 +21,10 @@ const UpdateTask = ({
   onChangeHandler,
   onSubmitHandler,
   buttonText,
+  valueShortDesctiption,
+  valueDate,
+  valueDuration,
+  valueStatus,
   editForm
 }: UpdateFormProps) => {
   return (
@@ -34,6 +42,15 @@ const UpdateTask = ({
         value={valueDescription}
         id="description"
         name='description'
+        autoComplete="off"
+        placeholder="Description"
+        type="text"
+        onChange={onChangeHandler}
+      />
+      <input
+        value={valueShortDesctiption}
+        id="shortDescription"
+        name='shortDescription'
         autoComplete="off"
         placeholder="Description"
         type="text"

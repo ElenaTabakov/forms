@@ -48,7 +48,7 @@ const Tasks = () => {
             [e.target.name] : e.target.value
         })
   };
-  const hadleEditTask = (e : any) => {
+  const hadleEditTask = (e:  React.FormEvent<HTMLFormElement>)=> {
     e.preventDefault();
     console.log(editTaskValue)
     dispatch(updateTasks({

@@ -5,7 +5,7 @@ interface UpdateFormProps {
   valueTitle: string;
   valueDescription: string;
   onChangeHandler: (e : React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmitHandler: ( e: any) => void;
+  onSubmitHandler:  (e:  React.FormEvent<HTMLFormElement>) => void;
 }
 
 const UpdateTask = ({
@@ -35,7 +35,7 @@ const UpdateTask = ({
         type="text"
         onChange={onChangeHandler}
       />
-      <button>Edit Task</button>
+      <button type="submit">Edit Task</button>
     </form>
   );
 };
